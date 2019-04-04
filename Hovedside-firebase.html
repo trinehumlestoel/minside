@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="no">
+	<head>
+		<meta charset="UTF-8">
+		<title>Hovedside</title>
+	<style>
+		}
+		ul li{
+			color:#708090;
+			text-align: center;
+		}
+			body{
+				font-family:Verdana;
+			}
+			h1{
+				font-size:70px;
+				color:black;
+				text-shadow: 2px 3px 0 grey;
+				text-align: center;
+				font-family: 'Pacifico', cursive;
+			}
+			p{
+				font-family: Verdana; 
+				font-size: 14px; 
+				color: darkslategray; 
+				line-height: 1.5; 
+				margin-bottom: 20px;
+			}
+			img{
+				width:590px;
+				height:430px;
+				margin-right: 20px;
+				margin-bottom: 20px;
+			}
+			#hovudbilde{
+				border-radius: 5px;
+			}
+			nav{
+				text-align: center;
+				display:grid;
+				grid-gap: 20px;
+				grid-template-columns: 1fr 1fr 1fr 1fr;
+				background-color: lightgrey;
+			}
+			input{
+				margin-bottom: 50px;
+				margin-right:10px;
+				margin-left: 20px;
+				margin-top: 30px;
+				font-size:15px;
+			}
+			option{
+				margin-left: 20px;
+				margin-right: 20px;
+				font-size: 15px;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<body style="background-color:lightgrey;padding:80px">
+		
+		<main>
+			<nav>
+				<a href="Hannah.html"> Hannah Eileen Johansen </a>
+				<a href="Handball.html">Handball</a>
+				<a href="LS.html">Landskyttarstemnet</a>
+				<a href="NC2015.html">Norway Cup 2015 - Gull</a>
+			</nav>
+		</main>
+		
+		<h1>Velkommen</h1>
+		
+		<img style="margin:15px;" src="Meg2.jpg" id="hovedbilde">
+		<img style="margin:15px;" src="Meg4.jpg" id="hovedbilde">
+		
+		<p>Hei. Mitt navn er Trine Humlestøl Njøs. Eg er 17 år gammal og kjem frå Leikanger i Sogn og Fjordane. Eg skal fortelle om nokre av dei største tinga eg sett pris på i livet mitt til nå og håpar at det fell i smak.</p>
+		
+		<form action="register.html">
+			<label>Kva er din største opplevelse?</label>
+			<input type="text" name="oppleving" placeholder="Norway Cup" required>
+			<input type="checkbox" value="Savnar"><span>Savnar</span>
+			<input type="checkbox" value="Savnar ikkje"><span>Savnar ikkje</span>
+			<button type="submit"> Send inn </button>
+			<br>
+			<select name="favoritt" required>
+				<option value=" ">Korleis nettside du likte best?</option>
+				<option value="Norway Cup"> Norway Cup</option>
+				<option value="Framsida">Framsida</option>
+				<option value="Hannah"> Hannah</option>
+				<option value="Landskyttarstemnet">Landskyttarstemnet</option>
+				<option value="Handball"> Handball</option>
+			</select>
+			<button type="submit">OK</button>
+		</form>
+
+		<input type="file" id="inpFil" required> 
+		<div style="margin-top:20px"><input type="submit" id="knapp" value="Upload"></div>
+		<div id="info" style="margin-top:20px"></div> 
+
+
+		<article id="txtMeldingar"></article>
+		
+		<script src="https://www.gstatic.com/firebasejs/5.8.6/firebase.js"></script>
+		<script>
+  		// Initialize Firebase
+  				var config = {
+    			apiKey: "AIzaSyC1_9ZscO2tNPrTi6Qebt_j8WRVREu2s-E",
+    			authDomain: "innlevering-skryteprosjekt.firebaseapp.com",
+    			databaseURL: "https://innlevering-skryteprosjekt.firebaseio.com",
+    			projectId: "innlevering-skryteprosjekt",
+    			storageBucket: "innlevering-skryteprosjekt.appspot.com",
+    			messagingSenderId: "151140342030"
+  			};
+  		firebase.initializeApp(config);
+		</script>
+
+		<script>
+			const database = firebase.database();
+			const bildeinfo = db.ref("bildeinfo");
+			const meldingar = database.ref("meldingar"); 
+			const storage = firebase.storage(); 
+      			const inpFil = document.getElementById("inpFil"); 
+      			const info = document.getElementById("info"); 
+			const nyMelding = {
+			"sendar": "Eg",
+			"tekst": "at ho kan følgje med på nettsidene mine" 
+		};
+	
+			meldingar.push(nyMelding);
+		function visMelding(snapshot) {
+		const melding = snapshot.val();
+		txtMeldingar.innerHTML += `<p>${melding.sendar} seier ${melding.tekst}</p>`;
+		}
+		meldingar.on("child_added", visMelding);
+
+
+      			function lastOppBilde() { 
+      				evt.preventDefault();
+        		const fil = inpFil.files[0]; 
+        		const filnavn = fil.name; 
+        		const plassering = storage.ref("bilde/" + filnavn); 
+        		const bildeinfo = db.ref("bildeinfo");
+        		plassering.put(fil); 
+        		.then( fil => fil.ref.getDownloadURL())
+        		.then( url=> {
+        			bildeinfo.push({
+        				url : url
+        		});
+        		inpFil.disabled = true;
+        		info.innerHTML += "File '" + filnavn + "' is uploaded successfully to Firebase Storage";
+        				});
+      		} 
+      	knapp.addEventListener("click", lastOppBilde); 
+    </script> 
+
+    <script>
+    	const inpBilde = document.querySelector("#inpBilde");
+
+	</body>
+</html>
+
+
+
+
+
+
+
+
+
+
